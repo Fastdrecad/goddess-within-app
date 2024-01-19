@@ -1,0 +1,21 @@
+{
+  "name": "goddess-within",
+  "version": "1.0.0",
+  "description": "MERN eCommerce Server",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.1.0"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.2"
+  }
+}

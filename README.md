@@ -73,8 +73,7 @@ npm run seed:db [your-email] [your-password] // This is just an example.
 
 1. **Backend**:
 
-   - Navigate to the `server` directory.
-   - Install dependencies: `npm install`.
+   - Install dependencies in root directory: `npm install`.
    - Start the server: `npm run dev`.
 
 2. **Frontend**:

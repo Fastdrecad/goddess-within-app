@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const { Schema } = mongoose;
 
@@ -7,7 +7,7 @@ const ReviewSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
       default: null
     },
@@ -41,7 +41,7 @@ const ProductSchema = new Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User'
+      ref: "User"
     },
     name: {
       type: String,
@@ -54,19 +54,19 @@ const ProductSchema = new Schema(
     description: {
       material: {
         type: String,
-        enum: ['Cotton', 'Polyester', 'Wool', 'Linen', 'Silk'] // Example materials
+        enum: ["Cotton", "Polyester", "Wool", "Linen", "Silk"] // Example materials
       },
       fabric: {
         type: String,
-        enum: ['Knit', 'Woven', 'Nonwoven', 'Lace'] // Example fabric types
+        enum: ["Knit", "Woven", "Nonwoven", "Lace"] // Example fabric types
       },
       careInstructions: {
         type: String,
         enum: [
-          'Machine Wash Cold',
-          'Hand Wash',
-          'Dry Clean Only',
-          'Do Not Bleach'
+          "Machine Wash Cold",
+          "Hand Wash",
+          "Dry Clean Only",
+          "Do Not Bleach"
         ]
       }
     },
@@ -74,12 +74,12 @@ const ProductSchema = new Schema(
     slug: { type: String, unique: true, index: true }, // Define slug field for unique slugs
     brand: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Brand',
+      ref: "Brand",
       default: null
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
+      ref: "Category",
       default: null
     },
     reviews: [ReviewSchema],
@@ -102,7 +102,7 @@ const ProductSchema = new Schema(
       {
         size: {
           type: String,
-          enum: ['XS', 'S', 'M', 'L', 'XL'],
+          enum: ["XS", "S", "M", "L", "XL"],
           required: true
         },
         quantity: {
@@ -136,9 +136,9 @@ const ProductSchema = new Schema(
 );
 
 // Middleware to generate a slug before saving
-ProductSchema.pre('save', function (next) {
+ProductSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true }); // Generate slug from product name
   next();
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model("Product", ProductSchema);

@@ -1,41 +1,43 @@
-const keys = require('../../config/keys');
-const router = require('express').Router();
+const keys = require("../../config/keys");
+const router = require("express").Router();
 
 const { paypal } = keys;
-const authRoutes = require('./authRoute');
-const productRoutes = require('./productRoute');
-const categoryRoutes = require('./categoryRoute');
-const brandRoutes = require('./brandRoute');
-const userRoutes = require('./userRoute');
-const orderRoutes = require('./orderRoute');
-const wishlistRoutes = require('./wishlistRoute');
-const uploadRoutes = require('./uploadRoute');
+const authRoutes = require("./authRoute");
+const productRoutes = require("./productRoute");
+const categoryRoutes = require("./categoryRoute");
+const brandRoutes = require("./brandRoute");
+const userRoutes = require("./userRoute");
+const orderRoutes = require("./orderRoute");
+const wishlistRoutes = require("./wishlistRoute");
+const uploadRoutes = require("./uploadRoute");
 
 // auth routes
-router.use('/auth', authRoutes);
+router.use("/auth", authRoutes);
 
 // user routes
-router.use('/users', userRoutes);
+router.use("/users", userRoutes);
 
 // products routes
-router.use('/products', productRoutes);
+router.use("/products", productRoutes);
 
 // brands routes
-router.use('/brands', brandRoutes);
+router.use("/brands", brandRoutes);
 
 // categories routes
-router.use('/categories', categoryRoutes);
+router.use("/categories", categoryRoutes);
 
 // order routes
-router.use('/orders', orderRoutes);
+router.use("/orders", orderRoutes);
 
 // wishlist routes
-router.use('/wishlists', wishlistRoutes);
+router.use("/wishlists", wishlistRoutes);
 
 // paypal config route
-router.use('/config/paypal', (req, res) => res.send({ clientId: paypal.key }));
+router.use("/config/paypal", (req, res) => res.send({ clientId: paypal.key }));
+
+router.use("/health", (req, res) => res.send("API is healthy"));
 
 // upload images
-router.use('/upload', uploadRoutes);
+router.use("/upload", uploadRoutes);
 
 module.exports = router;

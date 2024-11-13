@@ -13,7 +13,7 @@ import ScrollToTop from "@/ScrollToTop";
 function App() {
   return (
     <PayPalScriptProvider deferLoading={true}>
-      <Router>
+      <Router future={{ v7_startTransition: true }}>
         <ScrollToTop />
         <SlugProvider>
           <MainLayout>

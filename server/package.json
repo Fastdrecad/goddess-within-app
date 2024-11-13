@@ -4,21 +4,21 @@
   "description": "MERN eCommerce Server",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "server": "nodemon server/index.js",
+    "start": "node index.js",
+    "server": "nodemon --legacy-watch index.js",
     "client": "cd client && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "data:import": "node server/seeder.js",
-    "data:destroy": "node server/seeder.js -d",
+    "data:import": "node seeder.js",
+    "data:destroy": "node seeder.js -d",
     "build": "npm install && npm install --prefix client && npm run build --prefix client",
-    "seed:db": "node server/utils/seed.js"
+    "seed:db": "node utils/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "classnames": "^2.5.1",
+    "chalk": "^4.1.2",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -29,14 +29,12 @@
     "mongoose": "^8.1.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^3.1.7",
     "sharp": "^0.33.2",
     "slugify": "^1.6.6",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "nodemon": "^3.1.7"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "chalk": "^4.1.2",
     "concurrently": "^7.6.0"
   }
 }

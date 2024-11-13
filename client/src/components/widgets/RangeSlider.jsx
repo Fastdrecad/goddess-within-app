@@ -28,7 +28,7 @@ const RangeSlider = ({
   step,
   defaultValue,
   max,
-  allowCross,
+  allowCross = true,
   onChange
 }) => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -84,11 +84,6 @@ const RangeSlider = ({
       )}
     </>
   );
-};
-
-RangeSlider.defaultProps = {
-  type: "range",
-  allowCross: true
 };
 
 export default RangeSlider;

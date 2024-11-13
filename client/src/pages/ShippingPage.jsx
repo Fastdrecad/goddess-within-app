@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 import { saveShippingAddress } from "@/redux/slices/cartSlice";
 
-import FormContainer from "@/components/forms/FormContainer";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import CheckoutSteps from "@/components/checkout/CheckoutSteps";
+import FormContainer from "@/components/ui/FormContainer";
 
 const ShippingPage = () => {
   // Access shipping address from Redux store if previously saved

@@ -1,0 +1,40 @@
+services:
+  nginx:
+    image: ${DOCKER_USERNAME}/goddess-within-nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/goddess-within.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /dev/null:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - client
+      - api
+    networks:
+      - goddess-net
+    container_name: goddess-within-nginx-prod
+
+  client:
+    image: ${DOCKER_USERNAME}/goddess-within-client:latest
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=${VITE_API_URL}
+    networks:
+      - goddess-net
+    container_name: goddess-within-client-prod
+
+  api:
+    image: ${DOCKER_USERNAME}/goddess-within-api:latest
+    restart: always
+    container_name: goddess-within-api-prod
+    networks:
+      - goddess-net
+    env_file:
+      - .env
+
+networks:
+  goddess-net:
+    driver: bridge

@@ -5,9 +5,9 @@ import { Form, Col } from "react-bootstrap";
 
 import { savePaymentMethod } from "@/redux/slices/cartSlice";
 
-import FormContainer from "@/components/forms/FormContainer";
 import CheckoutSteps from "@/components/checkout/CheckoutSteps";
 import Button from "@/components/ui/Button";
+import FormContainer from "@/components/ui/FormContainer";
 
 const PaymentPage = () => {
   // State to track the selected payment method, defaulting to "Paypal"

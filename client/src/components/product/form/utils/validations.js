@@ -36,18 +36,18 @@ export const validateProductForm = (formData) => {
     errors.careInstructions = "Care instructions are required";
   }
 
-  // Validation for sizes: checks if at least one size is provided with both size and quantity
+  // Validation for sizes: checks if at least one size is provided with valid quantity
   if (!formData.sizes || !formData.sizes.length) {
     errors.sizes = "At least one size must be provided";
   } else {
-    formData.sizes.forEach((size, index) => {
-      if (!size.size) {
-        errors[`sizes[${index}].size`] = "Size is required";
-      }
-      if (!size.quantity || size.quantity <= 0) {
-        errors[`sizes[${index}].quantity`] = "Quantity must be greater than 0";
-      }
-    });
+    const invalidSize = formData.sizes.some(
+      (size) =>
+        !size.size || typeof size.quantity !== "number" || size.quantity <= 0
+    );
+    if (invalidSize) {
+      errors.sizes =
+        "Each product size must have a valid quantity greater than 0";
+    }
   }
 
   return {

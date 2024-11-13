@@ -16,6 +16,7 @@ const PaymentPage = lazy(() => import("@/pages/PaymentPage"));
 const PlaceOrderPage = lazy(() => import("@/pages/PlaceOrderPage"));
 const OrderPage = lazy(() => import("@/pages/OrderPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
 // Lazy load admin pages
 const UserListPage = lazy(() => import("@/pages/admin/UserListPage"));
@@ -42,50 +43,54 @@ function RoutesConfig() {
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      {isSpecialPage ? (
-        // Separate routes for pages that might need custom handling
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/wishlist" element={<WishListPage />} />
-        </Routes>
-      ) : (
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/brands" element={<BrandsPage />} />
-          <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/shop/*" element={<ShopPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/brand/:slug" element={<BrandsShop />} />
+      <Routes>
+        {isSpecialPage ? (
+          <>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/wishlist" element={<WishListPage />} />
+          </>
+        ) : (
+          <>
+            {/* Public Routes */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/brands" element={<BrandsPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/shop/*" element={<ShopPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/brand/:slug" element={<BrandsShop />} />
 
-          {/* Protected Routes */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/shipping" element={<ShippingPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/placeorder" element={<PlaceOrderPage />} />
-            <Route path="/order/:id" element={<OrderPage />} />
-          </Route>
+            {/* Protected Routes */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/shipping" element={<ShippingPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/placeorder" element={<PlaceOrderPage />} />
+              <Route path="/order/:id" element={<OrderPage />} />
+            </Route>
 
-          {/* Admin Routes */}
-          <Route element={<AdminRoute />}>
-            <Route path="/admin/userlist" element={<UserListPage />} />
-            <Route path="/admin/user/:id/edit" element={<UserEditPage />} />
-            <Route path="/admin/orderlist" element={<OrderListPage />} />
-            <Route path="/admin/product-list" element={<ProductListPage />} />
-            <Route
-              path="/admin/product/:id/edit"
-              element={<EditProductPage />}
-            />
-            <Route
-              path="/admin/create-product"
-              element={<CreateProductPage />}
-            />
-          </Route>
-        </Routes>
-      )}
+            {/* Admin Routes */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin/userlist" element={<UserListPage />} />
+              <Route path="/admin/user/:id/edit" element={<UserEditPage />} />
+              <Route path="/admin/orderlist" element={<OrderListPage />} />
+              <Route path="/admin/product-list" element={<ProductListPage />} />
+              <Route
+                path="/admin/product/:id/edit"
+                element={<EditProductPage />}
+              />
+              <Route
+                path="/admin/create-product"
+                element={<CreateProductPage />}
+              />
+            </Route>
+
+            {/* Catch-All Route for 404 */}
+            <Route path="*" element={<NotFoundPage />} />
+          </>
+        )}
+      </Routes>
     </Suspense>
   );
 }

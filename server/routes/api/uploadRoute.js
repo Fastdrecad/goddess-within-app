@@ -1,18 +1,18 @@
-const multer = require('multer');
-const path = require('path');
-const sharp = require('sharp');
-const fs = require('fs');
-const router = require('express').Router();
+const multer = require("multer");
+const path = require("path");
+const sharp = require("sharp");
+const fs = require("fs");
+const router = require("express").Router();
 
 // Determine the path to the "uploads" folder within the Goddess Within app directory
-// const uploadsDir = path.join(__dirname, '..', '..', '..', 'uploads');
+// const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
 
 // Define the uploads directory path within the public folder of the React app
-const uploadsDir = path.join(__dirname, '../../../client/public/uploads');
+const uploadsDir = path.join(__dirname, "../../../client/public/uploads");
 
 // Ensure the "uploads" directory exists, create it if it doesn't
 if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
+  fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
@@ -39,7 +39,7 @@ const multerFilter = (req, file, cb) => {
   if (extname && mimetype) {
     cb(null, true);
   } else {
-    cb(new Error('Images only!'));
+    cb(new Error("Images only!"));
   }
 };
 
@@ -49,16 +49,16 @@ const upload = multer({
   limits: { fileSize: 2000000 } // 2MB limit
 });
 
-router.post('/', upload.array('images', 5), async (req, res) => {
+router.post("/", upload.array("images", 5), async (req, res) => {
   if (!req.files || req.files.length === 0) {
-    return res.status(400).send('No images uploaded.');
+    return res.status(400).send("No images uploaded.");
   }
 
   const imageSizes = [
-    { name: 'thumbnail', width: 150 },
-    { name: 'medium', width: 500 },
-    { name: 'large', width: 1000 },
-    { name: 'url', width: 1920 }
+    { name: "thumbnail", width: 150 },
+    { name: "medium", width: 500 },
+    { name: "large", width: 1000 },
+    { name: "url", width: 1920 }
   ];
 
   try {
@@ -86,12 +86,12 @@ router.post('/', upload.array('images', 5), async (req, res) => {
     });
 
     res.send({
-      message: 'Images uploaded and processed successfully.',
+      message: "Images uploaded and processed successfully.",
       images: processedImages
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error processing images.');
+    res.status(500).send("Error processing images.");
   }
 });
 

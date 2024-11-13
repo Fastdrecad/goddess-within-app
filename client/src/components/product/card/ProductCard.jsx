@@ -12,9 +12,9 @@ const ProductCard = ({ product, type }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const { wishlistItems } = useSelector((state) => state?.wishlist);
 
-  const updateWishList = (product) => {
+  const updateWishList = (productId) => {
     if (userInfo) {
-      dispatch(toggleWishlistItem(product));
+      dispatch(toggleWishlistItem(productId));
     } else {
       console.log("please login", userInfo);
       navigate("/login");

@@ -9,23 +9,13 @@ const NavigationMenu = ({ brandsData, toggleMenu }) => {
 
   return (
     <div className="navigation-menu">
-      <div className="menu-shop-header">
-        {/* <NavLink
-          className="menu-shop-title active"
-          to="/shop"
-          onClick={handleCategoryClick}
-        >
-          Shop
-        </NavLink> */}
-        <Button
-          variant="primary"
-          className="menu-shop-button"
-          onClick={handleCategoryClick}
-          text="Shop All Products"
-          as={NavLink}
-          to="/shop"
-        />
-      </div>
+      <NavLink
+        className="menu-shop-button"
+        to="/shop"
+        onClick={handleCategoryClick}
+      >
+        SHOP
+      </NavLink>
 
       <div className="menu-header">
         <h3 className="menu-title">Browse by brand</h3>

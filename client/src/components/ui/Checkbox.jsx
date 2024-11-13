@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 const Checkbox = ({
-  className,
+  className = "",
   id,
   name,
   label,
   disabled,
-  checked,
+  checked = false,
   onChange
 }) => {
   const [isChecked, setIsChecked] = useState(checked);
@@ -46,7 +46,3 @@ const Checkbox = ({
 };
 
 export default Checkbox;
-
-Checkbox.defaultProps = {
-  className: ""
-};

@@ -64,6 +64,11 @@ const SizeQuantityInputs = ({ formData, setFormData, errors }) => {
           />
         </div>
       )}
+
+      {/* Error message when no sizes or invalid quantities are present */}
+      {errors.sizes && (
+        <span className="invalid-message d-block mb-2">{errors.sizes}</span>
+      )}
       <div className="size-quantity-container d-flex flex-wrap flex-row gap-2 px-2">
         {/* Render each selected size input */}
         {formData.sizes.map((sizeObj, index) => (
@@ -79,10 +84,6 @@ const SizeQuantityInputs = ({ formData, setFormData, errors }) => {
             />
           </div>
         ))}
-
-        {errors.sizes && (
-          <span className="invalid-message">{errors.sizes}</span>
-        )}
       </div>
     </>
   );

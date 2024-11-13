@@ -35,7 +35,7 @@ To configure the backend, follow these steps:
 MONGO_URI=
 PORT=
 JWT_SECRET=
-CLIENT_URL=
+VITE_API_URL=
 PAYPAL_CLIENT_ID=
 PAYPAL_APP_SECRET=
 PAYPAL_API_URL=
@@ -66,7 +66,7 @@ npm run seed:db [your-email] [your-password] // This is just an example.
 1. **Environment File**: Navigate to the `client` folder and create a file: `.env`:
 
    ```plaintext
-   API_URL=
+   VITE_API_URL=
    ```
 
 ## Running the Application

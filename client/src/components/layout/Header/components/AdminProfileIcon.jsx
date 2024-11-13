@@ -4,76 +4,76 @@ import { NavLink } from "react-router-dom";
 import { GoPersonFill } from "react-icons/go";
 
 const AdminProfileIcon = () => {
-  const [isAtAdmin, setIsAtAdmin] = useState(false);
-  const dropDownRef = useRef(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
-        setIsAtAdmin(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleMouseEnter = () => {
-    setIsAtAdmin(true);
-  };
+  if (!userInfo || userInfo.role !== "ROLE ADMIN") {
+    return null;
+  }
 
-  const handleMouseLeave = () => {
-    setIsAtAdmin(false);
-  };
+  const adminMenuItems = [
+    { path: "/admin/product-list", label: "Products" },
+    { path: "/admin/orderlist", label: "Orders" },
+    { path: "/admin/userlist", label: "Users" },
+    {
+      path: "/admin/create-product",
+      label: "CREATE PRODUCT",
+      style: {
+        backgroundColor: "#fb0000",
+        fontWeight: "bold",
+        borderBottom: 0
+      }
+    }
+  ];
 
   return (
-    userInfo &&
-    userInfo.role === "ROLE ADMIN" && (
-      <div
-        className="admin-profile-container"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        ref={dropDownRef}
-        role="navigation"
-      >
-        <span className={`admin-profile-icon ${isAtAdmin ? "active" : ""}`}>
-          <GoPersonFill />
-        </span>
-        {isAtAdmin && (
-          <div className="dropdown-admin-menu">
-            <ul>
-              <NavLink to="/admin/product-list">
-                <li>
-                  <span>Products</span>
-                </li>
-              </NavLink>
-              <NavLink to="/admin/orderlist">
-                <li>
-                  <span>Orders</span>
-                </li>
-              </NavLink>
-              <NavLink to="/admin/userlist">
-                <li>
-                  <span>Users</span>
-                </li>
-              </NavLink>
+    <nav
+      className="admin-profile-container"
+      onMouseEnter={() => setIsDropdownOpen(true)}
+      onMouseLeave={() => setIsDropdownOpen(false)}
+      ref={dropdownRef}
+    >
+      <span className={`admin-profile-icon ${isDropdownOpen ? "active" : ""}`}>
+        <GoPersonFill />
+      </span>
+
+      {isDropdownOpen && (
+        <div className="dropdown-admin-menu">
+          <ul>
+            {adminMenuItems.map(({ path, label, style }) => (
               <NavLink
-                className="link-underline-opacity-75-hover"
-                to="/admin/create-product"
-                style={{ backgroundColor: "#fb0000" }}
+                key={path}
+                to={path}
+                style={style}
+                onClick={() => setIsDropdownOpen(false)}
               >
-                <li className="border-bottom-0">
-                  <span className="fw-bold">CREATE PRODUCT</span>
+                <li
+                  className={style?.borderBottom === 0 ? "border-bottom-0" : ""}
+                >
+                  <span
+                    className={style?.fontWeight === "bold" ? "fw-bold" : ""}
+                  >
+                    {label}
+                  </span>
                 </li>
               </NavLink>
-            </ul>
-          </div>
-        )}
-      </div>
-    )
+            ))}
+          </ul>
+        </div>
+      )}
+    </nav>
   );
 };
 

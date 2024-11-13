@@ -22,6 +22,8 @@ const UserListPage = () => {
     limit
   });
 
+  console.log(data);
+
   // Pagination controls: check if pagination is needed
   const displayPagination = data?.totalPages > 1;
   const left = limit * (data?.currentPage - 1) + 1;

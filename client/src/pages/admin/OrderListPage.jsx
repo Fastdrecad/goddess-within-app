@@ -4,8 +4,8 @@ import { Col, Row } from "react-bootstrap";
 import { useGetOrdersQuery } from "@/redux/slices/ordersApiSlice";
 
 import Message from "@/components/features/Message";
-import TableOrders from "@/components/tables/TableOrders";
 import Pagination from "@/components/navigation/Pagination";
+import TableOrders from "@/components/tables/TableOrders";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 // Sets the maximum number of orders displayed per page
@@ -20,6 +20,10 @@ const OrderListPage = () => {
     page: pageNumber,
     limit
   });
+
+  console.log("Orders Data:", data);
+  console.log("Orders Loading:", isLoading);
+  console.log("Orders Error:", error);
 
   // Check if pagination controls should be displayed
   const displayPagination = data?.totalPages > 1;

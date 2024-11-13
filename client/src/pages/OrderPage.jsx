@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { Col, Row, Card, Image, ListGroup } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { useEffect } from "react";
+import { Card, Col, Image, ListGroup, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
   useDeliverOrderMutation,
@@ -13,8 +13,8 @@ import {
 } from "@/redux/slices/ordersApiSlice";
 
 import Message from "@/components/features/Message";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Button from "@/components/ui/Button";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const OrderPage = () => {
   const { id: orderId } = useParams();
@@ -113,7 +113,7 @@ const OrderPage = () => {
     </Row>
   ) : error ? (
     <Message variant="danger">{error?.data?.message || error.error}</Message>
-  ) : (
+  ) : order ? ( // Add check for 'order' here
     <div className="two-line-ellipsis">
       <Row>
         <h1>
@@ -128,15 +128,18 @@ const OrderPage = () => {
               <h2>Shipping</h2>
               <p>
                 <strong>Name: </strong>
-                {`${order.user.firstName.charAt(0).toUpperCase() + order.user.firstName.slice(1)} ${order.user.lastName.charAt(0).toUpperCase() + order.user.lastName.slice(1)}`}
+                {order.user
+                  ? `${order.user.firstName.charAt(0).toUpperCase() + order.user.firstName.slice(1)} ${order.user.lastName.charAt(0).toUpperCase() + order.user.lastName.slice(1)}`
+                  : "N/A"}
               </p>
               <p>
-                <strong>Email: </strong> {order.user.email}
+                <strong>Email: </strong> {order.user ? order.user.email : "N/A"}
               </p>
               <p>
-                <strong>Address: </strong> {order.shippingAddress.address},{" "}
-                {order.shippingAddress.city} {order.shippingAddress.postalCode},{" "}
-                {order.shippingAddress.country}
+                <strong>Address: </strong>
+                {order.shippingAddress
+                  ? `${order.shippingAddress.address}, ${order.shippingAddress.city} ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`
+                  : "N/A"}
               </p>
               {order.isDelivered ? (
                 <Message variant="success">
@@ -166,25 +169,32 @@ const OrderPage = () => {
             {/* Order Items */}
             <ListGroup.Item className="p-0">
               <h2>Order Items</h2>
-              {order.orderItems.map((item, i) => (
-                <ListGroup.Item key={i}>
-                  <Row className="align-items-center">
-                    <Col md={1} className="p-0">
-                      <Image src={item.images[0].url} alt={item.name} fluid />
-                    </Col>
-                    <Col>
-                      <Link to={`/product/${item.product}`} className="fw-bold">
-                        {item.name}
-                      </Link>
-                      <h6 className="m-0">Size: {item?.size}</h6>
-                      <h6 className="m-0">Qty: {item?.qty}</h6>
-                    </Col>
-                    <Col md={4} className="text-end">
-                      {item.qty} x {item.price}€ = {item.qty * item.price}€
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
+              {order.orderItems && order.orderItems.length > 0 ? (
+                order.orderItems.map((item, i) => (
+                  <ListGroup.Item key={i}>
+                    <Row className="align-items-center">
+                      <Col md={1} className="p-0">
+                        <Image src={item.images[0].url} alt={item.name} fluid />
+                      </Col>
+                      <Col>
+                        <Link
+                          to={`/product/${item.product}`}
+                          className="fw-bold"
+                        >
+                          {item.name}
+                        </Link>
+                        <h6 className="m-0">Size: {item?.size}</h6>
+                        <h6 className="m-0">Qty: {item?.qty}</h6>
+                      </Col>
+                      <Col md={4} className="text-end">
+                        {item.qty} x {item.price}€ = {item.qty * item.price}€
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                ))
+              ) : (
+                <Message variant="info">No order items found.</Message>
+              )}
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -259,6 +269,8 @@ const OrderPage = () => {
         </Col>
       </Row>
     </div>
+  ) : (
+    <Message variant="danger">Order not found.</Message> // Handle if 'order' is still null
   );
 };
 

@@ -15,9 +15,6 @@ const setupDB = require("./utils/db");
 const app = express();
 const { port } = keys;
 
-// Cors middleware
-app.use(cors());
-
 // Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +34,31 @@ setupDB();
 
 app.use(morgan("dev"));
 
+// Define allowed origins
+const allowedOrigins = [
+  "http://localhost:5173", // Development origin
+  "https://goddess-within.andrijadesign.com" // Production origin
+];
+
+// CORS options
+const corsOptions = {
+  credentials: true,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests, or services)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg =
+        "The CORS policy for this site does not allow access from the specified Origin.";
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+};
+
+// Use CORS middleware with the options
+app.use(cors(corsOptions));
+
 // Define API routes
 app.use(routes);
 
@@ -44,14 +66,19 @@ app.use(routes);
 // This allows to serve the uploaded images directly from the server
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Static folder setup for client-side application
-const clientDistPath = path.join(__dirname, "..", "client", "dist");
-app.use(express.static(clientDistPath));
+// Serve static files and index.html only in production
+if (process.env.NODE_ENV === "production") {
+  const clientDistPath = path.join(__dirname, "..", "client", "dist");
+  app.use(express.static(clientDistPath));
 
-// Serve the index.html file for all routes that are not API routes
-app.get("*", (req, res) =>
-  res.sendFile(path.resolve(clientDistPath, "index.html"))
-);
+  // Serve the index.html file for non-API routes
+  app.get(/^\/(?!api).*/, (req, res) =>
+    res.sendFile(path.resolve(clientDistPath, "index.html"))
+  );
+}
+
+app.use(notFound);
+app.use(errorHandler);
 
 // Start the server
 app.listen(port, () => {
@@ -61,6 +88,3 @@ app.listen(port, () => {
     )}`
   );
 });
-
-app.use(notFound);
-app.use(errorHandler);

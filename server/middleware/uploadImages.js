@@ -1,11 +1,12 @@
-const path = require("path");
-const multer = require("multer");
-const sharp = require("sharp");
-const fs = require("fs");
+const path = require('path');
+const multer = require('multer');
+const sharp = require('sharp');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../public/images/products"));
+    cb(null, path.join(__dirname, '../public/images/products'));
+    // TODO IF NEEDED ADJUST THE UPLOAD PATH
     // cb(null, path.join(__dirname, '../public/uploads'));
   },
   filename: function (req, file, cb) {
@@ -26,7 +27,7 @@ const multerFilter = (req, file, cb) => {
   if (extname && mimetype) {
     cb(null, true);
   } else {
-    cb(new Error("Images only!"), false);
+    cb(new Error('Images only!'), false);
   }
 };
 
@@ -42,7 +43,7 @@ const productImgResize = async (req, res, next) => {
   await Promise.all(
     req.files.map(async (file) => {
       await sharp(file.buffer)
-        .toFormat("jpeg")
+        .toFormat('jpeg')
         .resize(300, 300)
         .jpeg({ quality: 90 })
         .toFile(`public/images/products/${file.filename}`);

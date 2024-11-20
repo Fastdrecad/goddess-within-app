@@ -10,7 +10,7 @@ const cors = require("cors");
 
 const keys = require("./config/keys");
 const routes = require("./routes");
-const setupDB = require("./utils/db");
+const setupDB = require("./config/db");
 
 const app = express();
 const { port } = keys;
@@ -37,23 +37,25 @@ app.use(morgan("dev"));
 // Define allowed origins
 const allowedOrigins = [
   "http://localhost:5173", // Development origin
-  "https://goddess-within.andrijadesign.com" // Production origin
+  "https://goddess-within.andrijadesign.com",
+  "https://www.goddess-within.andrijadesign.com" // Production origin
 ];
 
 // CORS options
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl requests, or services)
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg =
-        "The CORS policy for this site does not allow access from the specified Origin.";
-      return callback(new Error(msg), false);
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.error(`Origin ${origin} not allowed by CORS`);
+      callback(new Error("Not allowed by CORS"));
     }
-    return callback(null, true);
-  }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Content-Range", "X-Content-Range"],
+  maxAge: 600 // Cache preflight requests for 10 minutes
 };
 
 // Use CORS middleware with the options

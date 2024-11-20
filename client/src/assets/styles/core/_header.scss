@@ -904,7 +904,7 @@
       border-color: $black;
       border-bottom: white;
 
-      @include media-breakpoint-down(sm) {
+      @include media-breakpoint-down(md) {
         background-color: white;
         border: 2px solid;
         border-color: transparent;

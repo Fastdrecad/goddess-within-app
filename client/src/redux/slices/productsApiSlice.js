@@ -1,5 +1,5 @@
+import { PRODUCTS_URL } from "@/constants";
 import { apiSlice } from "./apiSlice";
-import { BRANDS_URL, PRODUCTS_URL, UPLOAD_URL } from "@/constants";
 
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -147,6 +147,16 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE"
       }),
       invalidatesTags: [{ type: "Products", id: "LIST" }]
+    }),
+
+    getFeaturedProducts: builder.query({
+      query: () => {
+        console.log("Building query URL for featured products"); // Debug log
+        return {
+          url: `${PRODUCTS_URL}/featured`,
+          params: { type: "featured" }
+        };
+      }
     })
   })
 });
@@ -162,5 +172,6 @@ export const {
   useAddToWishlistMutation,
   useCreateProductMutation,
   useUploadProductImagesMutation,
-  useDeleteProductMutation
+  useDeleteProductMutation,
+  useGetFeaturedProductsQuery
 } = productsApiSlice;

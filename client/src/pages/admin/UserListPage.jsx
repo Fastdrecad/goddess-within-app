@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { toast } from "react-toastify";
-import { Col, Row } from "react-bootstrap";
 import {
   useDeleteUserMutation,
   useGetUsersQuery
 } from "@/redux/slices/usersApiSlice";
+import { useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
 
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Pagination from "@/components/navigation/Pagination";
 import TableUsers from "@/components/tables/TableUsers";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 // Limit for the number of users displayed per page
 const limit = 3;
@@ -21,8 +21,6 @@ const UserListPage = () => {
     page: pageNumber,
     limit
   });
-
-  console.log(data);
 
   // Pagination controls: check if pagination is needed
   const displayPagination = data?.totalPages > 1;

@@ -21,10 +21,6 @@ const OrderListPage = () => {
     limit
   });
 
-  console.log("Orders Data:", data);
-  console.log("Orders Loading:", isLoading);
-  console.log("Orders Error:", error);
-
   // Check if pagination controls should be displayed
   const displayPagination = data?.totalPages > 1;
 

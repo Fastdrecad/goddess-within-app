@@ -7,8 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-.cursorrules
-
 node_modules
 /.pnp
 .pnp.js
@@ -44,8 +42,10 @@ dist
 package.json.bak
 .DS_Store
 
-# config file
+# env files
 .env
+.env.*
+!.env.example
 
 # debug
 npm-debug.log*

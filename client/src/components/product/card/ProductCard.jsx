@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 import { toggleWishlistItem } from "@/redux/slices/wishlistSlice";
 
@@ -13,12 +13,11 @@ const ProductCard = ({ product, type }) => {
   const { wishlistItems } = useSelector((state) => state?.wishlist);
 
   const updateWishList = (productId) => {
-    if (userInfo) {
-      dispatch(toggleWishlistItem(productId));
-    } else {
-      console.log("please login", userInfo);
+    if (!userInfo) {
       navigate("/login");
+      return;
     }
+    dispatch(toggleWishlistItem(productId));
   };
 
   return (

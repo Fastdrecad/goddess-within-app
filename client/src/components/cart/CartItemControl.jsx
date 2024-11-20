@@ -1,12 +1,13 @@
-import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import Button from "@/components/ui/Button";
 import { removeFromCart } from "@/redux/slices/cartSlice";
 import { toggleWishlistItem } from "@/redux/slices/wishlistSlice";
-
-import Button from "@/components/ui/Button";
+import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CartItemControls = ({ item, id }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
   const { wishlistItems } = useSelector((state) => state.wishlist);
 
@@ -15,10 +16,10 @@ const CartItemControls = ({ item, id }) => {
 
   // Toggle item in wishlist if user is logged in, else prompt login
   const updateWishList = (product) => {
-    if (userInfo) {
-      dispatch(toggleWishlistItem(product));
+    if (!userInfo) {
+      navigate("/login");
     } else {
-      console.log("Please login", userInfo);
+      dispatch(toggleWishlistItem(product));
     }
   };
 
